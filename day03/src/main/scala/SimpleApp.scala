@@ -6,7 +6,7 @@ import org.apache.spark.rdd.RDD
 
 object SimpleApp {
 	def textSearch(textData: RDD[String]) {
-		val cases = textData.filter(line => line.contains("Mr."))
+		val cases = textData.filter(line => line.contains("Spark"))
 		println(cases.count());
 	}
 
@@ -22,7 +22,7 @@ object SimpleApp {
 		val sc = new SparkContext(conf)
 		
 		//load text file & cache
-		val textData = sc.textFile("titanic.csv").cache()
+		val textData = sc.textFile("input.txt").cache()
 
 		textSearch(textData)
 		wordCount(textData)
