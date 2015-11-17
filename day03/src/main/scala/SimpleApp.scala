@@ -6,8 +6,15 @@ import org.apache.spark.rdd.RDD
 
 object SimpleApp {
 	def textSearch(textData: RDD[String]) {
-		val errors = textData.filter(line => line.contains("Mr."))
-		println(errors.count());
+		val cases = textData.filter(line => line.contains("Mr."))
+		println(cases.count());
+	}
+
+	def wordCount(textData: RDD[String]) {
+		val counts = textData.flatMap(line => line.split(" "))
+                 		.map(word => (word, 1))
+                 		.reduceByKey(_ + _)
+		counts.saveAsTextFile("output/counts")
 	}
 
 	def main(args: Array[String]) {
@@ -18,5 +25,6 @@ object SimpleApp {
 		val textData = sc.textFile("titanic.csv").cache()
 
 		textSearch(textData)
+		wordCount(textData)
 	}
 }
